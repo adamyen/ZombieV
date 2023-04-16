@@ -3,7 +3,35 @@
 
 #include "HunterBase.hpp"
 
-class Bot : public HunterBase, public WorldEntityPool<Bot>
+
+// class DecisionTreeNode
+// {
+// public:
+//     DecisionTreeNode();
+// };
+
+class Action
+{
+public:
+    Action();
+
+    void actionIdle();
+    void actionShoot();
+    void actionScoot(float vx, float vy);
+    void actionMoveTowardEnemy(float vx, float vy);
+};
+
+class DecisionTree
+{
+public:
+    DecisionTree();
+
+    void treeNodeIsEnemyTargeted(GameWorld& world);
+    void treeNodeIsEnemyInShootingDistance(GameWorld& world);
+    void treeNodeIsEnemyTooClose(GameWorld& world, float distance, float vx, float vy);
+};
+
+class Bot : public HunterBase, public WorldEntityPool<Bot>, public DecisionTree, public Action
 {
 public:
     Bot();
@@ -19,8 +47,14 @@ private:
     WorldEntity* m_target;
     size_t m_getTargetCount;
 
-    void computeControls(GameWorld& world);
     void getTarget(GameWorld* world);
+    void treeNodeIsEnemyTargeted(GameWorld& world);
+    void treeNodeIsEnemyInShootingDistance(GameWorld& world);
+    void treeNodeIsEnemyTooClose(GameWorld& world, float distance, float vx, float vy);
+    void actionIdle();
+    void actionShoot();
+    void actionScoot(float vx, float vy);
+    void actionMoveTowardEnemy(float vx, float vy);
 };
 
 #endif // BOT_HPP_INCLUDED
