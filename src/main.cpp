@@ -38,20 +38,42 @@ int main()
 
     int waveCount = 0;
 
-    for (int i(2); i--;)
-    {
-        world.addEntity(Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10)));
-    }
+    // for (int i(2); i--;)
+    // {
+    //     world.addEntity(Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10)));
+    // }
 
     sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
+    
+    // Zombie& bossZombie = *Zombie::newEntity(getRandUnder(static_cast<float>(MAP_SIZE)), getRandUnder(static_cast<float>(MAP_SIZE)));
+    // std::cout << "---------bossZombie->getID() = " << bossZombie.getID() << "\n";
+    // std::cout << "---------hunter->getID() = " << h.getID() << "\n";
+    // EntityID target = h.getID();
+    // bossZombie.setTarget(target);
+    // world.addEntity(&bossZombie);
 
     Zombie* newZombie;
+
+    // Boss zombie setup
+    newZombie = Zombie::newEntity(static_cast<float>(MAP_SIZE/2 + 300), static_cast<float>(MAP_SIZE/2));
+    EntityID target = h.getID();
+    newZombie->setTarget(target);
+    newZombie->flock = true;
+    newZombie->isBoss = true;
+    world.addZombieEntity(newZombie);
+    int bossWorldId = world._zombieEntities.back()->_id;
+
+    // Normal zombie setup
     for (int i(100); i--;)
     {
         newZombie = Zombie::newEntity(getRandUnder(static_cast<float>(MAP_SIZE)), getRandUnder(static_cast<float>(MAP_SIZE)));
 		EntityID target = h.getID();
 		newZombie->setTarget(target);
-        world.addEntity(newZombie);
+        newZombie->flock = true;
+        // newZombie->noTargetFlock = true;
+        newZombie->isBoss = false;
+        newZombie->bossId = bossWorldId;
+        world.addZombieEntity(newZombie);
     }
 
     for (int i(0); i<10; ++i)
@@ -68,7 +90,6 @@ int main()
     while (window.isOpen())
     {
         ++frameCount;
-
         if (Zombie::getObjectsCount() == 0)
         {
             ++waveCount;
@@ -76,7 +97,7 @@ int main()
             {
                 Zombie* newZombie(Zombie::newEntity(getRandUnder(static_cast<float>(MAP_SIZE)), getRandUnder(static_cast<float>(MAP_SIZE))));
                 //newZombie->setTarget(&(*Hunter::getObjects().front()));
-                world.addEntity(newZombie);
+                world.addZombieEntity(newZombie);
             }
         }
 
