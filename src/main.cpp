@@ -71,6 +71,7 @@ int main()
 		newZombie->setTarget(target);
         newZombie->flock = true;
         // newZombie->noTargetFlock = true;
+        
         newZombie->isBoss = false;
         newZombie->bossId = bossWorldId;
         world.addZombieEntity(newZombie);
