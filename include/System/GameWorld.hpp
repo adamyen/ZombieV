@@ -24,6 +24,7 @@ public:
 
     U_2DConstraint* addConstraint(BodyID body1, BodyID body2, float length=0.0);
     void addEntity(WorldEntity* entity);
+    void addZombieEntity(WorldEntity* entity);
     void removeBody(BodyID id);
     void removeConstraint(U_2DConstraint* constraint);
     void update();
@@ -42,10 +43,10 @@ public:
 
     static U_2DBody* getBodyByID(BodyID id);
 
+    std::list<WorldEntity*> _zombieEntities;
 private:
     float _dt;
     Level _level;
-
     std::list<WorldEntity*> _entities;
     U_2DCollisionManager    _phyManager;
     EventManager            _eventManager;

@@ -65,3 +65,22 @@ Vec2 operator+(const Vec2& c1, const Vec2& c2)
 {
     return Vec2(c1.x+c2.x, c1.y+c2.y);
 }
+
+void Vec2::operator/= (float num)
+{
+    x /= num;
+    y /= num;
+}
+
+float Vec2::length() {
+    return sqrt(x * x + y * y);
+}
+
+Vec2 Vec2::normalize() {
+
+    float d = length();
+    if (d > 0.0) {
+        (*this) /= d;
+    }
+    return (*this);
+}
