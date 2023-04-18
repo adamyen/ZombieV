@@ -5,10 +5,12 @@
 #include "System/GameRender.hpp"
 
 #include "Bot.hpp"
+#include "BehaviorBot.hpp"
 #include "Props/Props.hpp"
 #include "Turret.hpp"
 #include "Hunter.hpp"
 #include "Zombie.hpp"
+#include "Task.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
@@ -34,7 +36,7 @@ int main()
     world.getPhyManager().setGravity(Vec2(0, 0));
 
     Hunter& h = *Hunter::newEntity(static_cast<float>(MAP_SIZE/2), static_cast<float>(MAP_SIZE/2));
-    world.addEntity(&h);
+    // world.addEntity(&h);
 
     int waveCount = 0;
 
