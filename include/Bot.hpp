@@ -29,6 +29,7 @@ public:
     void treeNodeIsEnemyTargeted(GameWorld& world);
     void treeNodeIsEnemyInShootingDistance(GameWorld& world);
     void treeNodeIsEnemyTooClose(GameWorld& world, float distance, float vx, float vy);
+    void treeNodeIsThereEnemyOnField(GameWorld& world);
 };
 
 class Bot : public HunterBase, public WorldEntityPool<Bot>, public DecisionTree, public Action
@@ -47,10 +48,10 @@ private:
     WorldEntity* m_target;
     size_t m_getTargetCount;
 
-    void getTarget(GameWorld* world);
     void treeNodeIsEnemyTargeted(GameWorld& world);
     void treeNodeIsEnemyInShootingDistance(GameWorld& world);
     void treeNodeIsEnemyTooClose(GameWorld& world, float distance, float vx, float vy);
+    void treeNodeIsThereEnemyOnField(GameWorld& world);
     void actionIdle();
     void actionShoot();
     void actionScoot(float vx, float vy);

@@ -79,8 +79,7 @@ void Bot::treeNodeIsEnemyTargeted(GameWorld& world)
     }
     else
     {
-        actionIdle();
-        getTarget(&world);
+        treeNodeIsThereEnemyOnField(world);
     }
 
     m_coord = getBodyCoord();
@@ -131,10 +130,9 @@ void Bot::treeNodeIsEnemyTooClose(GameWorld& world, float distance, float vx, fl
     }
 }
 
-
-
-void Bot::getTarget(GameWorld* world)
+void Bot::treeNodeIsThereEnemyOnField(GameWorld& world)
 {
+    actionIdle();
     ++m_getTargetCount;
     Zombie* zombie = nullptr;
     Zombie* target = nullptr;
@@ -226,4 +224,10 @@ void DecisionTree::treeNodeIsEnemyTargeted(GameWorld& world)
 {}
 
 void DecisionTree::treeNodeIsEnemyInShootingDistance(GameWorld& world)
+{}
+
+void DecisionTree::treeNodeIsEnemyTooClose(GameWorld& world, float distance, float vx, float vy)
+{}
+
+void DecisionTree::treeNodeIsThereEnemyOnField(GameWorld& world)
 {}
