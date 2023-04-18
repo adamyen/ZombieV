@@ -43,19 +43,19 @@ void Hunter::updateControls(const EventManager& em)
     float vx = 0.0f;
     float vy = 0.0f;
 
-    float norm = 1.0f;
+    float norm = 5.0f;
 
-    if (em.isKeyPressed(sf::Keyboard::Z))
-        vy = -1;
+    if (em.isKeyPressed(sf::Keyboard::W))
+        vy = -5;
     else if (em.isKeyPressed(sf::Keyboard::S))
-        vy = 1;
-    if (em.isKeyPressed(sf::Keyboard::Q))
-        vx = -1;
-    else if (em.isKeyPressed(sf::Keyboard::D))
-        vx = 1;
-    norm = vx && vy ? COS45 : 1.0f;
-
+        vy = 5;
     if (em.isKeyPressed(sf::Keyboard::A))
+        vx = -5;
+    else if (em.isKeyPressed(sf::Keyboard::D))
+        vx = 5;
+    norm = vx && vy ? 5*COS45 : 5.0f;
+
+    if (em.isKeyPressed(sf::Keyboard::Q))
     {
         if (_releasedWeaponSwap)
         {

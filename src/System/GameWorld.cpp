@@ -43,6 +43,13 @@ void GameWorld::addEntity(WorldEntity* entity)
     entity->initPhysics(this);
 }
 
+void GameWorld::addZombieEntity(WorldEntity* entity)
+{
+    _zombieEntities.push_back(entity);
+    entity->initPhysics(this);
+}
+
+
 void GameWorld::update()
 {
     _cleanEntities();
@@ -52,6 +59,10 @@ void GameWorld::update()
     //std::cout << "Phys time " << c.getElapsedTime().asMilliseconds() << std::endl;
 
     for (WorldEntity* entity : _entities)
+    {
+        entity->update(*this);
+    }
+    for (WorldEntity* entity : _zombieEntities)
     {
         entity->update(*this);
     }
@@ -73,6 +84,21 @@ void GameWorld::_cleanEntities()
             entity->setDying();
         }
     }
+
+    std::list<WorldEntity*>::iterator itZ;
+    for (itZ=_zombieEntities.begin(); itZ!=_zombieEntities.end(); ++itZ)
+    {
+        WorldEntity* entity = *itZ;
+        if (entity->isDying())
+        {
+            itZ = _zombieEntities.erase(itZ);
+            entity->kill(this);
+        }
+        else if (entity->isDone())
+        {
+            entity->setDying();
+        }
+    }
 }
 
 GridCell* GameWorld::getBodiesAt(const Vec2& coord)
@@ -83,6 +109,10 @@ GridCell* GameWorld::getBodiesAt(const Vec2& coord)
 void GameWorld::render()
 {
     for (WorldEntity* entity : _entities)
+    {
+        entity->render();
+    }
+    for (WorldEntity* entity : _zombieEntities)
     {
         entity->render();
     }

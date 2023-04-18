@@ -14,6 +14,10 @@ public:
 
     float x, y;
 
+    float length();
+    Vec2 normalize();
+    void operator/= (float num);
+
 };
 
 Vec2 operator/(const Vec2&, float);

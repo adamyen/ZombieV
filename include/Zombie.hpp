@@ -34,6 +34,11 @@ public:
 
     static void initialize();
 
+    bool flock = false;
+    bool noTargetFlock = false;
+    bool isBoss = false;
+    int bossId = 8055;
+
 private:
     float _pv;
     float _speed;
@@ -55,7 +60,7 @@ private:
 
     static Animation _moveAnimation;
     static Animation _attackAnimation;
-
+    std::tuple< Vec2, Vec2 > _getNearbyPosVel(Vec2 currPos, Vec2 currVel, int range, std::list<WorldEntity*> zombieEntities);
     void _getTarget();
 };
 

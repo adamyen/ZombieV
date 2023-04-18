@@ -49,16 +49,19 @@ public:
     virtual void render()=0;
 
 	static uint32_t registerEntity();
+    Vec2     m_coord;
+    float    _angle;
+    uint32_t _id;
 
 protected:
     /// Engine data
-    uint32_t _id;
+    
     EntityID m_globalID;
 
     /// Physical data
-    Vec2     m_coord;
+    
     uint32_t m_bodyID;
-    float    _angle;
+    
     float    _time;
     float    _life;
     bool     _isDying;
