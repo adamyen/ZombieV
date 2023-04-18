@@ -42,6 +42,7 @@ int main()
 
     for (int i(2); i--;)
     {
+        // world.addEntity(BehaviorBot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10)));
         world.addEntity(Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10)));
     }
 
