@@ -24,7 +24,7 @@ Bot::Bot(float x, float y) :
 
 void Bot::update(GameWorld& world)
 {
-    computeControls(world);
+    treeNodeIsEnemyTargeted(world);
 
     _currentWeapon->update();
     _time += DT;
@@ -33,7 +33,7 @@ void Bot::update(GameWorld& world)
     {
         if (!_currentWeapon->fire(&world, this))
         {
-            _changeState(IDLE);
+            actionIdle();
             if (_currentWeapon->isMagEmpty())
             {
                 _changeAnimation(_currentWeapon->getReloadAnimation(), false);
@@ -71,60 +71,67 @@ void Bot::update(GameWorld& world)
     _flashlight->angle = getAngle()+PI;*/
 }
 
-void Bot::computeControls(GameWorld& world)
+void Bot::treeNodeIsEnemyTargeted(GameWorld& world)
 {
     if (m_target)
     {
-        Vec2 vTarget(m_target->getCoord(), getCoord());
-        Vec2 direction(cos(_angle), sin(_angle));
-        Vec2 directionNormal(-direction.y, direction.x);
-
-        float dist = vTarget.getNorm();
-        float vx = vTarget.x/dist;
-        float vy = vTarget.y/dist;
-
-        float dot2 = vx*directionNormal.x + vy*directionNormal.y;
-        float coeff = 0.25f;
-
-        float absDot = std::abs(dot2);
-        coeff *= absDot;
-
-        if (absDot<0.25f || dist < 100)
-        {
-            if (dist < 300)
-            {
-                _changeState(SHOOTING);
-                if (dist < 100)
-                {
-                    _feetTime += DT;
-                    move(vx*_speed, vy*_speed);
-                }
-            }
-            else
-            {
-                float speedFactor = 0.25f;
-                move(-vx*_speed*speedFactor, -vy*_speed*speedFactor);
-                _feetTime += DT*speedFactor;
-            }
-        }
-        else
-        {
-            _changeState(IDLE);
-        }
-
-        _angle += dot2>0?-coeff:coeff;
-
-        if (m_target->isDying())
-            m_target = nullptr;
+        treeNodeIsEnemyInShootingDistance(world);
     }
     else
     {
-        _changeState(IDLE);
+        actionIdle();
         getTarget(&world);
     }
 
     m_coord = getBodyCoord();
 }
+
+void Bot::treeNodeIsEnemyInShootingDistance(GameWorld& world)
+{
+    Vec2 vTarget(m_target->getCoord(), getCoord());
+    Vec2 direction(cos(_angle), sin(_angle));
+    Vec2 directionNormal(-direction.y, direction.x);
+
+    float dist = vTarget.getNorm();
+    float vx = vTarget.x/dist;
+    float vy = vTarget.y/dist;
+
+    float dot2 = vx*directionNormal.x + vy*directionNormal.y;
+    float coeff = 0.25f;
+
+    float absDot = std::abs(dot2);
+    coeff *= absDot;
+
+    if (absDot<0.25f || dist < 100)
+    {
+        treeNodeIsEnemyTooClose(world, dist, vx, vy);
+    }
+    else
+    {
+        actionIdle();
+    }
+
+    _angle += dot2>0?-coeff:coeff;
+
+    if (m_target->isDying())
+        m_target = nullptr;
+}
+
+void Bot::treeNodeIsEnemyTooClose(GameWorld& world, float distance, float vx, float vy)
+{
+    if (distance < 300)
+    {
+        actionShoot();
+        if (distance < 100)
+            actionScoot(vx, vy);
+    }
+    else
+    {
+        actionMoveTowardEnemy(vx, vy);
+    }
+}
+
+
 
 void Bot::getTarget(GameWorld* world)
 {
@@ -165,8 +172,58 @@ void Bot::hit(WorldEntity* entity, GameWorld* gameWorld)
     }
 }
 
+void Bot::actionIdle()
+{
+    _changeState(IDLE);
+}
+
+void Bot::actionShoot()
+{
+    _changeState(SHOOTING);
+}
+
+void Bot::actionScoot(float vx, float vy)
+{
+    _feetTime += DT;
+    move(vx*_speed, vy*_speed);
+}
+
+void Bot::actionMoveTowardEnemy(float vx, float vy)
+{
+    float speedFactor = 0.25f;
+    move(-vx*_speed*speedFactor, -vy*_speed*speedFactor);
+    _feetTime += DT*speedFactor;
+}
+
 void Bot::initialize()
 {
     //HunterBase::init();
 }
 
+// DecisionTreeNode::DecisionTreeNode()
+// {}
+
+Action::Action()
+{}
+
+void Action::actionIdle()
+{}
+
+void Action::actionShoot()
+{}
+
+void Action::actionScoot(float vx, float vy)
+{}
+
+void Action::actionMoveTowardEnemy(float vx, float vy)
+{}
+
+
+DecisionTree::DecisionTree()
+{}
+
+void DecisionTree::treeNodeIsEnemyTargeted(GameWorld& world)
+{}
+
+void DecisionTree::treeNodeIsEnemyInShootingDistance(GameWorld& world)
+{}
