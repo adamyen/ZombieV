@@ -2,7 +2,6 @@
 #define BEHAVIORBOT_HPP_INCLUDED
 
 #include "HunterBase.hpp"
-#include "Task.hpp"
 
 class BehaviorTree
 {

@@ -1,5 +1,4 @@
 #include "Zombie.hpp"
-#include "System/VectorXY.h"
 #include "System/GameWorld.hpp"
 #include "System/GameRender.hpp"
 #include "Props/Props.hpp"

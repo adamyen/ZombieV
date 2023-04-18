@@ -5,11 +5,6 @@
 BehaviorTree::BehaviorTree()
 {}
 
-
-
-
-
-
 BehaviorBot::BehaviorBot() :
     HunterBase(0, 0),
     m_target(nullptr)

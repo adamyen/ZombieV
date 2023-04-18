@@ -10,7 +10,6 @@
 #include "Turret.hpp"
 #include "Hunter.hpp"
 #include "Zombie.hpp"
-#include "Task.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT 900
