@@ -128,7 +128,7 @@ int main()
 		int upTime = clock.getElapsedTime().asMilliseconds();
         ttime += upTime;
 
-        Vec2 p = h.getCoord();
+        Vec2 p = bot1.getCoord();
 		GameRender::setFocus({ p.x, p.y });
 
         GameRender::clear();
