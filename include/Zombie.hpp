@@ -24,6 +24,7 @@ public:
 
     void initPhysics(GameWorld* world);
     void setTarget(EntityID target);
+    EntityID secondTargetID;
     void hit(WorldEntity* entity, GameWorld* gameWorld);
     void update(GameWorld& world);
     void render();

@@ -69,6 +69,7 @@ int main()
     EntityID target = bot1.getID();
     newZombie->setTarget(target);
     newZombie->flock = true;
+    newZombie->secondTargetID = bot2.getID();
     world.addZombieEntity(newZombie);
     int bossWorldId = world._zombieEntities.back()->_id;
 
@@ -79,7 +80,7 @@ int main()
 		newZombie->setTarget(target);
         newZombie->flock = true;
         // newZombie->noTargetFlock = true;
-        
+        newZombie->secondTargetID = bot2.getID();
         newZombie->_isBoss = false;
         newZombie->bossId = bossWorldId;
         world.addZombieEntity(newZombie);
@@ -129,6 +130,10 @@ int main()
         ttime += upTime;
 
         Vec2 p = bot1.getCoord();
+        if (bot1.isDone()) {
+            p = bot2.getCoord();
+        }
+
 		GameRender::setFocus({ p.x, p.y });
 
         GameRender::clear();

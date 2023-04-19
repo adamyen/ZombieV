@@ -88,6 +88,9 @@ void Zombie::update(GameWorld& world)
     if (_target)
     {
         WorldEntity* target = world.getEntityByID(_target);
+        if (target->isDone()) {
+            target = world.getEntityByID(secondTargetID);
+        }
 
         /*std::cout << target->getCoord().x << std::endl;
         std::cout << target->getCoord().y << std::endl;
