@@ -39,14 +39,21 @@ int main()
 
     int waveCount = 0;
 
-    for (int i(2); i--;)
-    {
-        // world.addEntity(BehaviorBot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10)));
-        world.addEntity(Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10)));
-    }
+    // Decision Tree
+    Bot& bot1 = *Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10));
+    world.addEntity(&bot1);
+    Bot& bot2 = *Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10));
+    world.addEntity(&bot2);
 
-    sf::Mouse::setPosition(sf::Vector2i(WIN_WIDTH/2+100, WIN_HEIGHT/2));
+    // Behavior Tree
+    // BehaviorBot& bot1 = *BehaviorBot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10));
+    // world.addEntity(&bot1);
+    // BehaviorBot& bot2 = *BehaviorBot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10));
+    // world.addEntity(&bot2);
     
+
+
+
     // Zombie& bossZombie = *Zombie::newEntity(getRandUnder(static_cast<float>(MAP_SIZE)), getRandUnder(static_cast<float>(MAP_SIZE)));
     // std::cout << "---------bossZombie->getID() = " << bossZombie.getID() << "\n";
     // std::cout << "---------hunter->getID() = " << h.getID() << "\n";
@@ -58,7 +65,7 @@ int main()
 
     // Boss zombie setup
     newZombie = Zombie::newEntity(static_cast<float>(MAP_SIZE/2 + 300), static_cast<float>(MAP_SIZE/2 + 10), true);
-    EntityID target = h.getID();
+    EntityID target = bot1.getID();
     newZombie->setTarget(target);
     newZombie->flock = true;
     world.addZombieEntity(newZombie);
@@ -68,7 +75,6 @@ int main()
     for (int i(100); i--;)
     {
         newZombie = Zombie::newEntity(getRandUnder(static_cast<float>(MAP_SIZE)), getRandUnder(static_cast<float>(MAP_SIZE)));
-		EntityID target = h.getID();
 		newZombie->setTarget(target);
         newZombie->flock = true;
         // newZombie->noTargetFlock = true;
