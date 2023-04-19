@@ -113,7 +113,7 @@ void Zombie::update(GameWorld& world)
         _angle += dot2>0?-coeff:coeff;
 
         // Flocking force added here
-        if (flock || noTargetFlock) {
+        if (_isBoss == false && (flock || noTargetFlock)) {
             float maxForce = 30;
             float maxSpeed = 75;
             float maxAccel = 5;

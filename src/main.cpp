@@ -57,7 +57,7 @@ int main()
     Zombie* newZombie;
 
     // Boss zombie setup
-    newZombie = Zombie::newEntity(static_cast<float>(MAP_SIZE/2 + 300), static_cast<float>(MAP_SIZE/2), true);
+    newZombie = Zombie::newEntity(static_cast<float>(MAP_SIZE/2 + 300), static_cast<float>(MAP_SIZE/2 + 10), true);
     EntityID target = h.getID();
     newZombie->setTarget(target);
     newZombie->flock = true;
