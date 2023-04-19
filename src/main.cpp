@@ -57,11 +57,10 @@ int main()
     Zombie* newZombie;
 
     // Boss zombie setup
-    newZombie = Zombie::newEntity(static_cast<float>(MAP_SIZE/2 + 300), static_cast<float>(MAP_SIZE/2));
+    newZombie = Zombie::newEntity(static_cast<float>(MAP_SIZE/2 + 300), static_cast<float>(MAP_SIZE/2), true);
     EntityID target = h.getID();
     newZombie->setTarget(target);
     newZombie->flock = true;
-    newZombie->isBoss = true;
     world.addZombieEntity(newZombie);
     int bossWorldId = world._zombieEntities.back()->_id;
 
@@ -74,7 +73,7 @@ int main()
         newZombie->flock = true;
         // newZombie->noTargetFlock = true;
         
-        newZombie->isBoss = false;
+        newZombie->_isBoss = false;
         newZombie->bossId = bossWorldId;
         world.addZombieEntity(newZombie);
     }

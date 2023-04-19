@@ -25,11 +25,34 @@ Zombie::Zombie(float x, float y) :
     _vertexArray(sf::VertexArray(sf::Quads, 4))
 {
     _speed = 150;
+    
+    _life  = 100;
+    
+    _done  = false;
+
+    _currentAnimation = _moveAnimation;
+
+    _time = getRandUnder(100.0f);
+    _type = EntityTypes::ZOMBIE;
+
+    _currentState = IDLE;
+    _marked = false;
+    _target = ENTITY_NULL;
+}
+
+Zombie::Zombie(float x, float y, bool isBoss) :
+    StandardEntity(x, y, 0.0f),
+    _vertexArray(sf::VertexArray(sf::Quads, 4))
+{
+    
     if (isBoss) {
-        _life = 1000;
+        _life = 10000;
+        _speed = 300;
     } else {
         _life  = 100;
+        _speed = 150;
     }
+    _isBoss = isBoss;
     _done  = false;
 
     _currentAnimation = _moveAnimation;
@@ -99,7 +122,7 @@ void Zombie::update(GameWorld& world)
             float kS = 0.4;
             int collideRadius = 30;
 
-            std::tuple<Vec2, Vec2> nearbyPosVel = _getNearbyPosVel(m_coord, direction * 75, 300, world._zombieEntities);
+            std::tuple<Vec2, Vec2> nearbyPosVel = _getNearbyPosVel(m_coord, direction * 75, 1000, world._zombieEntities);
             Vec2 cohesionForce = std::get<0>(nearbyPosVel);
             Vec2 alignmentForce = std::get<1>(nearbyPosVel);
 
@@ -129,7 +152,10 @@ void Zombie::update(GameWorld& world)
                 Vec2 posDiff = charFuturePos - targetFuturePos;
                 if (posDiff.length() >= collideRadius) {
                     continue;
-                } 
+                }
+                else if (zombieEntity->isDone()) {
+                    continue;
+                }
                 else {
                     collide = true;
                     separationForce = separationForce + (posDiff * maxAccel/(collideRadius-posDiff.length()));
@@ -155,7 +181,7 @@ void Zombie::update(GameWorld& world)
         if (_currentState == MOVING)
         {
             float speed = 75;
-            if (isBoss) {
+            if (_isBoss) {
                 speed = 150;
             }
             move(speed*direction.normalize().x, speed*direction.normalize().y);
@@ -165,7 +191,7 @@ void Zombie::update(GameWorld& world)
             if (dist < 3*CELL_SIZE)
             {
                 // Need to create damage variable
-                if (isBoss) {
+                if (_isBoss) {
                     target->addLife(-50);
                 } else {
                     target->addLife(-5);
@@ -207,7 +233,7 @@ void Zombie::render()
         const Vec2& coord = m_coord;
         float x = coord.x;
         float y = coord.y;
-        if (isBoss) {
+        if (_isBoss) {
             GraphicUtils::initQuad(_vertexArray, sf::Vector2f(288, 311), sf::Vector2f(144, 155), SCALE*0.6);
         }
         else {
@@ -304,7 +330,10 @@ std::tuple< Vec2, Vec2 > Zombie::_getNearbyPosVel(Vec2 currPos, Vec2 currVel, in
         Vec2 posDiff = zPos - currPos;
         if (posDiff.length() > range && zombieEntity->_id != bossId) {
             continue;
-        } 
+        }
+        else if (zombieEntity->isDone()) {
+            continue;
+        }
         else {
             if (zombieEntity->_id == bossId && bossId != 8055) {
                 nearbyCount += 10;

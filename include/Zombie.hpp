@@ -19,6 +19,7 @@ class Zombie : public StandardEntity<Zombie>, public LifeForm
 public:
     Zombie();
     Zombie(float x, float y);
+    Zombie(float x, float y, bool isBoss);
     ~Zombie();
 
     void initPhysics(GameWorld* world);
@@ -36,7 +37,7 @@ public:
 
     bool flock = false;
     bool noTargetFlock = false;
-    bool isBoss = false;
+    bool _isBoss = false;
     int bossId = 8055;
 
 private:
