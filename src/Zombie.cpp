@@ -46,7 +46,7 @@ Zombie::Zombie(float x, float y, bool isBoss) :
 {
     
     if (isBoss) {
-        _life = 10000;
+        _life = 1000;
         _speed = 300;
     } else {
         _life  = 100;
@@ -180,9 +180,9 @@ void Zombie::update(GameWorld& world)
 
         if (_currentState == MOVING)
         {
-            float speed = 75;
+            float speed = 150;
             if (_isBoss) {
-                speed = 150;
+                speed = 300;
             }
             move(speed*direction.normalize().x, speed*direction.normalize().y);
         }
