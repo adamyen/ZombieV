@@ -40,6 +40,7 @@ int main()
     int waveCount = 0;
 
     // Decision Tree
+    Bot::registerObject(&world);
     Bot& bot1 = *Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10));
     world.addEntity(&bot1);
     Bot& bot2 = *Bot::newEntity(static_cast<float>(MAP_SIZE / 2 + rand() % 10), static_cast<float>(MAP_SIZE / 2 + rand() % 10));
